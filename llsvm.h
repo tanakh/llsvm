@@ -6,7 +6,7 @@
 #include <set>
 #include <string>
 #include <iostream>
-#include <cstdio>
+#include <cstdlib>
 #include <malloc.h>
 
 namespace libsvm{
@@ -141,13 +141,14 @@ public:
     model=svm_train(&prob, &param);
 
     if (auto_reload){
-      char *p=tempnam(NULL, "llsvmtmp");
-      this->save(p);
+      char tmp[32]="llsvmtempXXXXXX";
+      int fd=mkstemp(tmp);
+      close(fd);
 
-      svm(p).swap(*this);
+      this->save(tmp);
+      svm(tmp).swap(*this);
       
-      unlink(p);
-      free(p);
+      unlink(tmp);
     }
 
     delete []prob.y;
