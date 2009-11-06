@@ -174,6 +174,7 @@ public:
     std::swap(model, r.model);
   }
 
+private:
   std::vector<std::pair<int, std::vector<std::pair<int, double> > > > dat;
   svm_parameter param;
   svm_model *model;
